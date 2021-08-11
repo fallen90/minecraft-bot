@@ -1,0 +1,52 @@
+{
+  "name": "helper",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/ws": "^7.4.0",
+    "typescript": "^4.1.2"
+  },
+  "dependencies": {
+    "@types/yamljs": "^0.2.31",
+    "chalk": "^4.1.0",
+    "minecraft-data": "^2.70.2",
+    "mineflayer": "^2.34.0",
+    "mineflayer-armor-manager": "^1.3.0",
+    "mineflayer-collectblock": "^1.3.4",
+    "mineflayer-pathfinder": "^1.1.2",
+    "mineflayer-pvp": "^1.0.2",
+    "mineflayer-utils": "^0.1.4",
+    "npm-run-all": "^4.1.5",
+    "prismarine-block": "^1.7.2",
+    "prismarine-chat": "^1.0.3",
+    "prismarine-entity": "^1.1.0",
+    "prismarine-item": "^1.5.0",
+    "prismarine-viewer": "^1.7.2",
+    "prismarine-windows": "^1.6.0",
+    "rxjs": "^6.6.3",
+    "vec3": "^0.1.7",
+    "ws": "^7.4.2",
+    "yamljs": "^0.3.0"
+  },
+  "pkg": {
+    "scripts": "dist/**/*.js",
+    "assets": "dist/config.yml"
+  },
+  "scripts": {
+    "pkg": "pkg -t node14-macos,node14-linux --output bin/mc-helper --public --options --max-old-space-size=300 dist/index.js",
+    "release": "yarn build && yarn remove-ts && yarn pkg && yarn --force",
+    "copy-config": "cp config.yml ./dist/config.yml",
+    "copy-package": "cp package.json ./dist/package.json",
+    "clear-dist": "rm -rf dist",
+    "clear-bin": "rm -rf bin",
+    "remove-ts": "find ./node_modules -name \"*.d.ts\" -type f -delete",
+    "build": "yarn clear-dist && tsc && yarn copy-config",
+    "tsc": "tsc",
+    "start": "nodemon --exec \"tsc && node dist || exit 1\" -e \"ts\"",
+    "start:server": "nodemon -w dist --exec \"node dist/socket-server || exit 1\" -e \"ts\"",
+    "deploy": "run-s clear-dist tsc copy-config copy-package deploy-server",
+    "deploy-server": "rsync -av ./dist/* root@45.77.156.150:/root/helper --progress",
+    "remote-run": "ssh root@45.77.156.150 node /root/helper"
+  }
+}

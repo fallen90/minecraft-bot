@@ -1,0 +1,24 @@
+server:
+  # host: play.kings-craft.com
+  port: 50634
+  username: ImHelpfulNot
+  version: 1.16.4
+  
+client:
+  control: cli
+  master: fallen90
+
+plugins:
+  cobblestone-miner:
+    blocks:
+      - stone
+      - lapis_ore
+      - iron_ore
+      - coal_ore
+      - redstone_ore
+    distance: 6
+    throttle: 500
+  authme:
+    password: jasper90
+    on-login:
+      - /server skyblock
